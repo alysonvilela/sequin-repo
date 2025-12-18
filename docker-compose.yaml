@@ -63,9 +63,8 @@ volumes:
 #
 networks:
   default:
-    enable_ipv6: true
-    ipam:
-      config:
-        - subnet: "2001:db8:1::/64"
-  # sequin:
-  #   network_mode: host
+    network_mode: host
+    # enable_ipv6: true
+    # ipam:
+    #   config:
+    #     - subnet: "2001:db8:1::/64"
