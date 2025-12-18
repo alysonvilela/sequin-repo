@@ -58,9 +58,9 @@ volumes:
 # `docker compose down --volumes --remove-orphans`
 # to remove the existing network and start fresh
 #
-# networks:
-#   default:
-#     enable_ipv6: true
-#     ipam:
-#       config:
-#         - subnet: "2001:db8:1::/64"
+networks:
+  default:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: "2001:db8:1::/64"
