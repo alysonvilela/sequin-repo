@@ -8,10 +8,10 @@ users:
 
 databases:
   - name: "sequin-sinks"
-    username: "${PG_USERNAME}"
-    password: "${PG_PASSWORD}"
-    hostname: "${PG_HOSTNAME}"
-    database: "${PG_DATABASE}"
+    username: "${PG_DIRECT_USERNAME}"
+    password: "${PG_DIRECT_PASSWORD}"
+    hostname: "${PG_DIRECT_HOSTNAME}"
+    database: "${PG_DIRECT_DATABASE}"
     port: 5432
     slot_name: "sequin_slot"
     publication_name: "sequin_pub"
