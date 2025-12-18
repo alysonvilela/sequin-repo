@@ -12,7 +12,7 @@ services:
       - PG_PORT=5432
       - PG_USERNAME=postgres
       - PG_PASSWORD=postgres
-      - PG_POOL_SIZE=20
+      - PG_POOL_SIZE=10
       # Un-comment for SSL
       # - PG_SSL=true
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
