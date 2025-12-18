@@ -6,6 +6,9 @@ services:
     pull_policy: always
     ports:
       - "7376:7376"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     environment:
       - PG_PORT=${PG_PORT}
       - PG_HOSTNAME=${PG_HOSTNAME}
@@ -64,5 +67,5 @@ networks:
     ipam:
       config:
         - subnet: "2001:db8:1::/64"
-  sequin:
-    network_mode: host
+  # sequin:
+  #   network_mode: host
