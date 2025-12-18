@@ -7,46 +7,20 @@ services:
     ports:
       - "7376:7376"
     environment:
-      - PG_HOSTNAME=sequin_postgres
-      - PG_DATABASE=sequin
-      - PG_PORT=5432
-      - PG_USERNAME=postgres
-      - PG_PASSWORD=postgres
+      - PG_PORT=${PG_PORT}
+      - PG_HOSTNAME=${PG_HOSTNAME}
+      - PG_DATABASE=${PG_DATABASE}
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
       - PG_POOL_SIZE=10
       # Un-comment for SSL
-      # - PG_SSL=true
+      - PG_SSL=true
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
       - VAULT_KEY=2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
       - REDIS_URL=redis://sequin_redis:6379
-      - CONFIG_FILE_PATH=/config/playground.yml
-    volumes:
-      - ./playground.yml:/config/playground.yml
     depends_on:
       sequin_redis:
         condition: service_started
-      sequin_postgres:
-        condition: service_healthy
-
-  sequin_postgres:
-    image: postgres:16
-    ports:
-      - "7377:5432"
-    environment:
-      - POSTGRES_DB=sequin
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    command: ["postgres", "-c", "wal_level=logical"]
-    volumes:
-      - sequin_postgres_data:/var/lib/postgresql/data
-      # Creates a sample database for Sequin's Quickstart guide
-      - ./postgres-init:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d sequin"]
-      interval: 10s
-      timeout: 2s
-      retries: 5
-      start_period: 2s
-      start_interval: 1s
 
   sequin_redis:
     image: redis:7
@@ -76,7 +50,6 @@ services:
       - ./dashboard.json:/etc/grafana/dashboards/dashboards/sequin.json
 
 volumes:
-  sequin_postgres_data:
   sequin_redis_data:
   sequin_grafana_data:
 
