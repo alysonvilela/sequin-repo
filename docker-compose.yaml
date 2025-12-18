@@ -16,7 +16,6 @@ services:
       - PG_USERNAME=${PG_USERNAME}
       - PG_PASSWORD=${PG_PASSWORD}
       - PG_POOL_SIZE=10
-      - ERL_AFLAGS="-proto_dist inet_tcp"
       - PG_SSL=true
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
       - VAULT_KEY=2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
