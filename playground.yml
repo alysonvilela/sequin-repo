@@ -7,11 +7,11 @@ users:
     password: "sequinpassword!"
 
 databases:
-  - name: "sequin-playground"
-    username: "postgres"
-    password: "postgres"
-    hostname: "sequin_postgres"
-    database: "sequin_playground"
-    port: 5432
-    slot_name: "sequin_slot"
-    publication_name: "sequin_pub"
+  - name="sequin-sinks"
+  - username=${PG_USERNAME}
+  - password=${PG_PASSWORD}
+  - hostname=${PG_HOSTNAME}
+  - database=${PG_DATABASE}
+  - port=5432
+  - slot_name="sequin_slot"
+  - publication_name="sequin_pub"
