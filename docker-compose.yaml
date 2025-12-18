@@ -14,7 +14,7 @@ services:
       - PG_DATABASE=${PG_DATABASE}
       - PG_USERNAME=${PG_USERNAME}
       - PG_PASSWORD=${PG_PASSWORD}
-      - PG_POOL_SIZE=2
+      - PG_POOL_SIZE=15
       - ERL_AFLAGS="-proto_dist inet6_tcp"
       - PG_SSL=true
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
