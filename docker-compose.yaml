@@ -20,9 +20,11 @@ services:
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
       - VAULT_KEY=2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
       - REDIS_URL=redis://sequin_redis:6379
+    networks:
+      - sequin-net
     depends_on:
-      sequin_redis:
-        condition: service_started
+          sequin_redis:
+            condition: service_healthy # Changed from service_started
 
   sequin_redis:
     image: redis:7
@@ -31,6 +33,13 @@ services:
     command: ["redis-server", "--port", "6379"]
     volumes:
       - sequin_redis_data:/data
+    healthcheck: # Added healthcheck so Sequin waits until Redis is truly ready
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sequin-net
 
   sequin_prometheus:
     image: prom/prometheus
@@ -52,6 +61,7 @@ services:
       - ./dashboard.json:/etc/grafana/dashboards/dashboards/sequin.json
 
 volumes:
+  sequin-net:
   sequin_redis_data:
   sequin_grafana_data:
 
