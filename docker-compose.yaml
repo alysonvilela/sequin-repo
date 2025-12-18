@@ -6,9 +6,8 @@ services:
     pull_policy: always
     ports:
       - "7376:7376"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
+    networks:
+      - sequin-net
     environment:
       - PG_PORT=${PG_PORT}
       - PG_HOSTNAME=${PG_HOSTNAME}
@@ -16,33 +15,34 @@ services:
       - PG_USERNAME=${PG_USERNAME}
       - PG_PASSWORD=${PG_PASSWORD}
       - PG_POOL_SIZE=10
+      - ERL_AFLAGS="-proto_dist inet6_tcp"
       - PG_SSL=true
       - SECRET_KEY_BASE=wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
       - VAULT_KEY=2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
       - REDIS_URL=redis://sequin_redis:6379
-    networks:
-      - sequin-net
     depends_on:
-          sequin_redis:
-            condition: service_healthy # Changed from service_started
+      sequin_redis:
+        condition: service_healthy
 
   sequin_redis:
     image: redis:7
     ports:
       - "7378:6379"
+    networks:
+      - sequin-net
     command: ["redis-server", "--port", "6379"]
-    volumes:
-      - sequin_redis_data:/data
-    healthcheck: # Added healthcheck so Sequin waits until Redis is truly ready
+    healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - sequin-net
+    volumes:
+      - sequin_redis_data:/data
 
   sequin_prometheus:
     image: prom/prometheus
+    networks:
+      - sequin-net
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -50,6 +50,8 @@ services:
 
   sequin_grafana:
     image: grafana/grafana
+    networks:
+      - sequin-net
     ports:
       - "8276:3000"
     depends_on:
@@ -60,20 +62,11 @@ services:
       - ./grafana_dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
       - ./dashboard.json:/etc/grafana/dashboards/dashboards/sequin.json
 
-volumes:
+# THIS SECTION WAS MISSING
+networks:
   sequin-net:
+    driver: bridge
+
+volumes:
   sequin_redis_data:
   sequin_grafana_data:
-
-# Un-comment this to enable IPv6
-# You may need to run
-# `docker compose down --volumes --remove-orphans`
-# to remove the existing network and start fresh
-#
-# networks:
-#   default:
-#     network_mode: host
-    # enable_ipv6: true
-    # ipam:
-    #   config:
-    #     - subnet: "2001:db8:1::/64"
